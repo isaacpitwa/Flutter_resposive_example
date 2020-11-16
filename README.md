@@ -1,6 +1,6 @@
 # flutter_responsive_example
 
-A new Flutter application.
+![Preview ](assets/preview.png)
 
 ## Getting Started
 
