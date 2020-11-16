@@ -1,14 +1,26 @@
-library master_detail_state.dart_state;
+import 'package:equatable/equatable.dart';
+import 'package:flutter_responsive_example/data/item.dart';
 
-import 'package:flutter_responsive_example/presentation/presentation.dart';
+abstract class MasterDetailState extends Equatable {
+  const MasterDetailState();
+}
 
-part 'master_detail_state.dart_state.g.dart';
+class LoadingItemsState extends MasterDetailState {
+  @override
+  List<Object> get props => [];
+}
 
-abstract class MasterDetailState
-    implements Built<MasterDetailState, MasterDetailStateBuilder> {
+class NoItemsState extends MasterDetailState {
+  @override
+  List<Object> get props => [];
+}
 
-  MasterDetailState._();
+class LoadedItemsState extends MasterDetailState {
+  final List<Item> elements;
+  final Item selectedElement;
 
-  factory MasterDetailState(
-      [updates(MasterDetailStateBuilder b)]) = _$MasterDetailState;
+  LoadedItemsState(this.elements, this.selectedElement);
+
+  @override
+  List<Object> get props => [selectedElement, ...elements];
 }
