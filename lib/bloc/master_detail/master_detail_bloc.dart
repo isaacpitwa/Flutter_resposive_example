@@ -1,36 +1,35 @@
-import 'package:flutter_responsive_example/presentation/presentation.dart';
+import 'dart:async';
 
-import 'master_detail_bloc.dart_actions.dart';
-import 'master_detail_bloc.dart_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_responsive_example/data/item.dart';
 
-class MasterDetailBloc {
-  BlocController<MasterDetailState, Action> get controller => _core;
-  BlocCore<MasterDetailState, MasterDetailStateBuilder, Action> _core;
+import 'bloc.dart';
 
-  MasterDetailBloc() {
-    _core = BlocCore<MasterDetailState, MasterDetailStateBuilder, Action>(
-      stateBuilderInitializer: _initializeStateBuilder,
-      stateInitializer: _initializeState,
-      dispatcher: _dispatch,
-    );
+class MasterDetailBloc extends Bloc<MasterDetailEvent, MasterDetailState> {
+  List<Item> _items = [];
+  Item _selected;
+
+  @override
+  MasterDetailState get initialState => LoadingItemsState();
+
+  @override
+  Stream<MasterDetailState> mapEventToState(
+      MasterDetailEvent event,
+      ) async* {
+    if (event is AddItemEvent) {
+      _items.add(event.element);
+    } else if (event is SelectItemEvent) {
+      _selected = event.selected;
+    }
+    yield* _loadItems();
   }
 
-  void dispose() {
-    _core.dispose();
-  }
-
-  MasterDetailStateBuilder _initializeStateBuilder() {
-    return MasterDetailStateBuilder();
-  }
-
-  MasterDetailState _initializeState(MasterDetailStateBuilder builder) {
-    return builder.build();
-  }
-
-  void _dispatch(Action action) {
-    switch (action.runtimeType) {
-      default:
-        assert(false);
+  Stream<MasterDetailState> _loadItems() async* {
+    if (_items.isEmpty) {
+      yield NoItemsState();
+    } else {
+      final newState = LoadedItemsState([..._items], Item.fromItem(_selected));
+      yield newState;
     }
   }
 }

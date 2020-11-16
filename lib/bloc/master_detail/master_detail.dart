@@ -1,42 +1,29 @@
-import 'package:base_bloc/base_bloc.dart';
-import 'package:flutter/material.dart';
-import './master_detail_bloc.dart';
-import './master_detail_events.dart';
-import './master_detail_state.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_responsive_example/data/item.dart';
 
-/// Created by mbp on 16/Nov/2020
-///
-/// Copyright ©2020 by mbp. All rights reserved.
-class MasterDetailWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => MasterDetailWidgetState();
+abstract class MasterDetailEvent extends Equatable {
+  const MasterDetailEvent();
 }
 
-class MasterDetailWidgetState extends BaseBlocState<MasterDetailWidget> {
+class LoadItemsEvent extends MasterDetailEvent {
+  @override
+  List<Object> get props => [];
+}
 
-  BuildContext _context;
+class AddItemEvent extends MasterDetailEvent {
+  final Item element;
+
+  AddItemEvent(this.element);
 
   @override
-  Widget build(BuildContext context) =>
-      BaseBlocBuilder<MasterDetailState>(bloc, _buildBody);
+  List<Object> get props => [element];
+}
+
+class SelectItemEvent extends MasterDetailEvent {
+  final Item selected;
+
+  SelectItemEvent(this.selected);
 
   @override
-  BaseBloc createBloc() => MasterDetailBloc();
-
-  Widget _buildBody(BuildContext context, MasterDetailState state) {
-    return SafeArea(
-        bottom: false, top: false,
-        child: Scaffold(
-          body: Builder(builder: (BuildContext context) {
-            _context = context;
-            return Container(
-              child: Center(
-                child: Text("MasterDetail Widget"),
-              ),
-            );
-          }),
-        )
-    );
-  }
-
+  List<Object> get props => [selected];
 }
