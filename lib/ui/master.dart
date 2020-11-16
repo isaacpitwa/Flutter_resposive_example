@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_responsive_example/bloc/master_detail/bloc.dart';
 import 'package:flutter_responsive_example/data/item.dart';
 
+import 'detail.dart';
+
 class Master extends StatefulWidget {
   @override
   _MasterState createState() => _MasterState();
